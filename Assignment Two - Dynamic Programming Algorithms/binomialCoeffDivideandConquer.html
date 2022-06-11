@@ -1,0 +1,80 @@
+
+<body>
+  <h1>Binomial Coefficient: Divide and Conquer and Dynamic Algorithms</h1>
+  <label for="nInput">Input 'n'</label>
+  <input type="number" name="nInput" id="nInput" max="20" min="1" step="1">
+  
+  <label for="kInput">Input 'k'</label>
+  <input type="number" name="kInput" id="kInput" max="20" min="1" step="1">
+ 
+
+  <p><button onclick="divideAndConquerCLICK()">Divide and Conquer!</button> </p>
+  
+  <button onclick="dynamicCLICK()">Dynamic >:)</button>
+ 
+
+  
+
+  <script>
+
+function divideAndConquerCLICK(){
+    k = document.getElementById("kInput").value;
+    n = document.getElementById("nInput").value;
+    var divideAndConquerStart = Date.now();
+    divideAndConquer(n,k);
+    var divideAndConquerDuration = Date.now() - divideAndConquerStart;
+    
+   
+    document.write("Value of C("+n+", "+k+") is "+divideAndConquer(n, k), " and took ", divideAndConquerDuration, " milliseconds to run");
+    
+}
+
+function dynamicCLICK(){
+    k = document.getElementById("kInput").value;
+    n = document.getElementById("nInput").value;
+    var dynamicStart = Date.now();
+    dynamic(n, k);
+    var dynamicDuratioin = Date.now() - dynamicStart;
+
+
+    document.write("Value of C("+n+", "+k+") is "+ dynamic(n,k), " and took ", dynamicDuratioin, " milliseconds to run.")
+}
+
+
+
+
+
+    function divideAndConquer(n , k)
+{
+ 
+    // Base Cases
+    if (k > n)
+        return 0;
+    if (k == 0 || k == n)
+        return 1;
+ 
+    // Recur
+    return divideAndConquer(n - 1, k - 1)
+        + divideAndConquer(n - 1, k);
+}
+
+
+function dynamic(n, k)
+{
+    let res = 1;
+ 
+ // Since C(n, k) = C(n, n-k)
+ if (k > n - k)
+     k = n - k;
+
+ // Calculate value of
+ // [n * (n-1) *---* (n-k+1)] / [k * (k-1) *----* 1]
+ for (let i = 0; i < k; ++i) {
+     res *= (n - i);
+     res /= (i + 1);
+ }
+
+ return res;
+}
+  </script>
+</body>

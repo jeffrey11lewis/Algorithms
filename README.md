@@ -1,2 +1,0 @@
-# Algorithms
- Everything Algorithms Class

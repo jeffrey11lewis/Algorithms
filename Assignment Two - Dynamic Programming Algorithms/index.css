@@ -2,13 +2,14 @@ body {
     text-align: center;
     font-family: "Lucida Console", "Courier New", monospace;
     background-color: lightblue;
-    text-
+
   }
   
   h1 {
     color: navy;
     margin-left: 20px;
   }
+
   button {
     background-color: #4CAF50; /* Green */
     border: none;

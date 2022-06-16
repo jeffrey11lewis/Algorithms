@@ -1,36 +1,101 @@
 <body>
 <h1>Greedy Algorithms: Knapsack Problem</h1>
+<button id="dynamic-btn" onclick="dynamicCLICK()">DYNAMIC</button>
+<button id="greedy-btn" onclick="greedyCLICK()">GREEDY</button>
+<p id="endResult"></p>
 <script>
-const values = [12, 2, 1, 4, 1];
-const weights = [4, 2, 1, 10, 2];
-const target = 15;
-let lookup = new Map();
+values = Array.from({length: 60}, () => Math.floor(Math.random() * 40));
+weights = Array.from({length:60}, () => Math.floor(Math.random() * 40));
+//values = [ 60, 100, 120, 140,10, 50,30,160,140 ];
+//weights = [ 10, 20, 30 ];
+W = 50;
+n = values.length;
+lookup = new Map();
 
-const knapSackDynamic = (values, weights, n, target, lookup) => {
+function dynamicCLICK(){
+  //console.log("i am responsive");
+    var dynamicStart = Date.now();
+    dynamicKnapSack();
+    var dynamicDuration = Date.now() - dynamicStart;
+    
+    
+    let endResult = document.getElementById("endResult");
+    //message = "you made it";
+  message = "DYNAMIC: Knapsack value is " + dynamicKnapSack(W,weights, values,  n ) +" and took "+ dynamicDuration+ " milliseconds to run";;
+    endResult.textContent = message;
+}
 
-  if (target < 0) {
-    return Number.MIN_SAFE _INTEGER;
+function greedyCLICK(){
+  //console.log("i am responsive and greedy");
+  var greedyStart = Date.now();
+    greedyKnapSack();
+    var greedyDuration = Date.now() - greedyStart;
+
+    let endResult = document.getElementById("endResult");
+    message = "GREEDY: Knapsack value is " + greedyKnapSack(values, weights, n, W) +" and took "+ greedyDuration+ " milliseconds to run";;
+    endResult.textContent = message;
+}
+
+function greedyKnapSack(){
+  const knapSack = (values, weights, n, W) => {
+  if(W < 0){
+    return Number.MIN_SAFE_INTEGER;
+  }
+  if(n < 0 || W === 0){
+    return 0;
+  }
+  let include = values[n] + knapSack(values, weights, n - 1, W - weights[n]);
+  let exclude = knapSack(values, weights, n - 1, W);
+  return Math.max(include, exclude);
+}
+answer = knapSack(values, weights, values.length - 1, W);
+return answer;
+
+}
+
+
+function dynamicKnapSack(){
+    const knapSack = (values, weights, n, W, lookup) => {
+  // base case: when we cannot have take more items
+  if (W < 0) {
+    return Number.MIN_SAFE_INTEGER;
   }
 
-  if (n < 0 || target == 0) {
+  // base case: when no items are left or capacity becomes 0
+  if (n < 0 || W == 0) {
     return 0;
   }
 
-  const key = `${n}|${target}`;
+  // form a unique key from the inputs for memoization
+  const key = `${n}|${W}`;
 
+  // If the sub-problem is appearing for first time, solve it and
+  // store its result in the map
   if (!lookup.has(key)){
 
-    let include = values[n] + knapSackDynamic(values, weights, n - 1, target - weights[n], lookup);
+    // pick current item n in knapSack and recur
+    // for remaining items (n-1) with reduced capacity (W - weights[n])
+    let include = values[n] + knapSack(values, weights, n - 1, W - weights[n], lookup);
 
-    let exclude = knapSackDynamic(values, weights, n - 1, target, lookup);
+    // leave current item n from knapSack and recur for
+    // remaining items (n-1)
+    let exclude = knapSack(values, weights, n - 1, W, lookup);
 
+    // Assign max value we get by picking or leaving the current item
     lookup.set(key, Math.max(include, exclude));
   }
 
-  return lookup.get(key); 
+  // return the value
+  return lookup.get(key);
 }
-document.write(knapSackDynamic(values, weights, values.length - 1, target, lookup));
+answer = knapSack(values, weights, n - 1, W, lookup);
+return answer;
+}
+
+
 
 
 </script>
+
+
 </body>

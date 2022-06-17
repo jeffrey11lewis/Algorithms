@@ -1,0 +1,111 @@
+<body>
+    <h1>Backtracking Algorithms: Knapsack Problem</h1>
+    <link rel="stylesheet" href="index.css">
+    <button id="dynamic-btn" onclick="dynamicCLICK()">DYNAMIC</button>
+    <button id="greedy-btn" onclick="backtracingCLICK()">BACKTRACING</button>
+    <label>Iterations: </label><input type="number" name="iterations" id="iterations-ip" max="20" min="1" step="1">
+    <p id="endResult"></p>
+    <script>
+    values = Array.from({length: 70}, () => Math.floor(Math.random() * 40));
+    weights = Array.from({length:70}, () => Math.floor(Math.random() * 40));
+    //values = [ 60, 100, 120, 50 ];
+    //weights = [ 10, 20, 30 ];
+    W = 50;
+    n = values.length;
+    lookup = new Map();
+    
+    function dynamicCLICK(){
+      //console.log("i am responsive");
+        var dynamicStart = Date.now();
+        dynamicKnapSack();
+        var dynamicDuration = Date.now() - dynamicStart;
+        
+        
+        let endResult = document.getElementById("endResult");
+        //message = "you made it";
+      message = "DYNAMIC: Knapsack value is " + dynamicKnapSack(W,weights, values,  n ) +" and took "+ dynamicDuration+ " milliseconds to run";;
+        endResult.textContent = message;
+    }
+    
+    function backtracingCLICK(){
+      var backtracingStart = Date.now();
+        backtracingKnapSack();
+        var backtracingDuration = Date.now() - backtracingStart;
+    
+        let endResult = document.getElementById("endResult");
+        message = "BACKTRACING: Knapsack value is " + backtracingKnapSack() +" and took "+ backtracingDuration+ " milliseconds to run";;
+        endResult.textContent = message;
+    }
+    
+    function backtracingKnapSack(){
+        let path = [];
+       let maxvalue = 0;
+        function search(i) { //Represents the recursion depth
+            if(i>=n){
+                checkMax(); //Check the maximum value
+            }
+            else{
+                path[i] = 0;
+                search(i+1);
+                path[i] = 1;
+                search(i+1);
+            }
+        }
+        function checkMax() {
+            var weight = 0,
+                value = 0;
+            for(let i=0;i<n;i++){ 
+                if(path[i] == 1){
+                    weight += weights[i];
+                    value += values[i];
+                }
+                else{
+                    path[i] == 0;
+                }
+            }
+            if (weight <= W) { //Determine whether the upper limit is reached 
+                if (value >= maxvalue) {
+                   maxvalue = value;
+                    console.log('The maximum value is'+maxvalue);
+                    console.log('Selected item (1 means selected, 0 means not selected):');
+                    console.log(path);
+                }
+            }
+            
+        }
+        search(0);
+        return maxvalue;
+    }
+    
+    
+    function dynamicKnapSack(){
+        const knapSack = (values, weights, n, W, lookup) => {
+      if (W < 0) {
+        return Number.MIN_SAFE_INTEGER;
+      }
+     0
+      if (n < 0 || W == 0) {
+        return 0;
+      }
+      const key = `${n}|${W}`;
+      if (!lookup.has(key)){
+        let include = values[n] + knapSack(values, weights, n - 1, W - weights[n], lookup);
+    
+        let exclude = knapSack(values, weights, n - 1, W, lookup);
+    
+        lookup.set(key, Math.max(include, exclude));
+      }
+    
+      return lookup.get(key);
+    }
+    answer = knapSack(values, weights, n - 1, W, lookup);
+    return answer;
+    }
+    
+    
+    
+    
+    </script>
+    
+    
+    </body>

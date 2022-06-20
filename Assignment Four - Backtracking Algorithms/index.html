@@ -1,8 +1,10 @@
 <body>
     <h1>Backtracking Algorithms: Knapsack Problem</h1>
+    <a href="https://docs.google.com/document/d/15m1cqu-0iUgH0AZztQV_2gnz1TH3s3fNvThmdJGavPI/edit?usp=sharing" target="_blank">REPORT</a>
+    <a href="https://github.com/jeffrey11lewis/Algorithms/blob/main/Assignment%20Four%20-%20Backtracking%20Algorithms/index.html" target="_blank">CODE ON GITHUB</a>
     <link rel="stylesheet" href="index.css">
-    <button id="dynamic-btn" onclick="dynamicCLICK()">DYNAMIC</button>
-    <button id="greedy-btn" onclick="backtracingCLICK()">BACKTRACING</button>
+   <p> <button id="dynamic-btn" onclick="dynamicCLICK()">DYNAMIC</button></p>
+    <button id="greedy-btn" onclick="backtracingCLICK()">BACKTRACKING</button>
     
     <p id="endResult"></p>
    
@@ -51,7 +53,7 @@
         backtrackingArray.push(backtracingDuration);
         let endResult = document.getElementById("endResult");
       }
-        message = "BACKTRACING: Knapsack value is " + backtracingKnapSack(W,weights, values,  n) +" and took "+ average(backtrackingArray)+ " milliseconds to run";;
+        message = "BACKTRACKING: Knapsack value is " + backtracingKnapSack(W,weights, values,  n) +" and took "+ average(backtrackingArray)+ " milliseconds to run";;
         endResult.textContent = message;
     }
     

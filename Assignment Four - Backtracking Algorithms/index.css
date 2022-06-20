@@ -1,12 +1,12 @@
 body {
     text-align: center;
-    font-family: "Lucida Console", "Courier New", monospace;
+    font-family:Verdana, sans-serif;
     background-color: lightblue;
 
   }
   
   h1 {
-    color: navy;
+    color: black;
     margin-left: 20px;
   }
 

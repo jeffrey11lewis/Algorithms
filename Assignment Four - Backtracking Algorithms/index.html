@@ -3,37 +3,55 @@
     <link rel="stylesheet" href="index.css">
     <button id="dynamic-btn" onclick="dynamicCLICK()">DYNAMIC</button>
     <button id="greedy-btn" onclick="backtracingCLICK()">BACKTRACING</button>
-    <label>Iterations: </label><input type="number" name="iterations" id="iterations-ip" max="20" min="1" step="1">
+    
     <p id="endResult"></p>
-    <script>
-    values = Array.from({length: 70}, () => Math.floor(Math.random() * 40));
-    weights = Array.from({length:70}, () => Math.floor(Math.random() * 40));
-    //values = [ 60, 100, 120, 50 ];
+   
+   <script>
+    
+
+    values = Array.from({length: 20}, () => Math.floor(Math.random() * 40));
+    weights = Array.from({length:20}, () => Math.floor(Math.random() * 40));
+    //values = [ 60, 100, 50, 50 ];
     //weights = [ 10, 20, 30 ];
     W = 50;
     n = values.length;
     lookup = new Map();
     
+    function average(array){
+      let average = array.reduce((a, b) => a + b, 0) / array.length;
+
+      return average;
+    }
     function dynamicCLICK(){
+      //console.log("I'm gere");
+      let dynamicArray = [];
+      for (let i = 0; i < 10; i++) {
+        
       //console.log("i am responsive");
         var dynamicStart = Date.now();
         dynamicKnapSack();
         var dynamicDuration = Date.now() - dynamicStart;
-        
+        dynamicArray.push(dynamicDuration);
+        //console.log(dynamicArray);
+
         
         let endResult = document.getElementById("endResult");
+      }
         //message = "you made it";
-      message = "DYNAMIC: Knapsack value is " + dynamicKnapSack(W,weights, values,  n ) +" and took "+ dynamicDuration+ " milliseconds to run";;
+      message = "DYNAMIC: Knapsack value is " + dynamicKnapSack(W,weights, values,  n ) +" and took "+ average(dynamicArray)+ " milliseconds to run";;
         endResult.textContent = message;
     }
     
     function backtracingCLICK(){
+      let backtrackingArray = [];
+      for (let i = 0; i < 10; i++) {
       var backtracingStart = Date.now();
         backtracingKnapSack();
         var backtracingDuration = Date.now() - backtracingStart;
-    
+        backtrackingArray.push(backtracingDuration);
         let endResult = document.getElementById("endResult");
-        message = "BACKTRACING: Knapsack value is " + backtracingKnapSack() +" and took "+ backtracingDuration+ " milliseconds to run";;
+      }
+        message = "BACKTRACING: Knapsack value is " + backtracingKnapSack(W,weights, values,  n) +" and took "+ average(backtrackingArray)+ " milliseconds to run";;
         endResult.textContent = message;
     }
     
@@ -66,9 +84,9 @@
             if (weight <= W) { //Determine whether the upper limit is reached 
                 if (value >= maxvalue) {
                    maxvalue = value;
-                    console.log('The maximum value is'+maxvalue);
-                    console.log('Selected item (1 means selected, 0 means not selected):');
-                    console.log(path);
+                    //console.log('The maximum value is'+maxvalue);
+                    //console.log('Selected item (1 means selected, 0 means not selected):');
+                    //console.log(path);
                 }
             }
             

@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <link rel="stylesheet" href="C:\Users\torch\Documents\Algorithms\Assignment Four - Backtracking Algorithms\index.css">
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Assignment Five</title>
+</head>
+<body>
+ 
+  <button id="greedy-btn" onclick="greedyCLICK()">GREEDY</button>
+  <button id="greedy-btn" onclick="backtracingCLICK()">BACKTRACKING</button>
+  <p id="endResult"></p>
+
+
+  
+</body>
+<script>
+      values = Array.from({length: 20}, () => Math.floor(Math.random() * 40));
+    weights = Array.from({length:20}, () => Math.floor(Math.random() * 40));
+    //values = [ 60, 100, 50, 50 ];
+    //weights = [ 10, 20, 30 ];
+    W = 50;
+    n = values.length;
+    lookup = new Map();
+    
+    function average(array){
+      let average = array.reduce((a, b) => a + b, 0) / array.length;
+
+      return average;
+    }
+function backtracingCLICK(){
+      let backtrackingArray = [];
+      for (let i = 0; i < 10; i++) {
+      var backtracingStart = Date.now();
+        backtracingKnapSack();
+        var backtracingDuration = Date.now() - backtracingStart;
+        backtrackingArray.push(backtracingDuration);
+        let endResult = document.getElementById("endResult");
+      }
+        message = "BACKTRACKING: Knapsack value is " + backtracingKnapSack(W,weights, values,  n) +" and took "+ average(backtrackingArray)+ " milliseconds to run";;
+        endResult.textContent = message;
+    }
+    
+    function backtracingKnapSack(){
+        let path = [];
+       let maxvalue = 0;
+        function search(i) { //Represents the recursion depth
+            if(i>=n){
+                checkMax(); //Check the maximum value
+            }
+            else{
+                path[i] = 0;
+                search(i+1);
+                path[i] = 1;
+                search(i+1);
+            }
+        }
+        function checkMax() {
+            var weight = 0,
+                value = 0;
+            for(let i=0;i<n;i++){ 
+                if(path[i] == 1){
+                    weight += weights[i];
+                    value += values[i];
+                }
+                else{
+                    path[i] == 0;
+                }
+            }
+            if (weight <= W) { //Determine whether the upper limit is reached 
+                if (value >= maxvalue) {
+                   maxvalue = value;
+                    //console.log('The maximum value is'+maxvalue);
+                    //console.log('Selected item (1 means selected, 0 means not selected):');
+                    //console.log(path);
+                }
+            }
+            
+        }
+        search(0);
+        return maxvalue;
+    }
+
+function greedyCLICK(){
+  //console.log("i am responsive and greedy");
+  var greedyStart = Date.now();
+    greedyKnapSack();
+    var greedyDuration = Date.now() - greedyStart;
+
+    let endResult = document.getElementById("endResult");
+    message = "GREEDY: Knapsack value is " + greedyKnapSack() +" and took "+ greedyDuration+ " milliseconds to run";;
+    endResult.textContent = message;
+}
+
+function greedyKnapSack(){
+  const knapSack = (values, weights, n, W) => {
+  if(W < 0){
+    return Number.MIN_SAFE_INTEGER;
+  }
+  if(n < 0 || W === 0){
+    return 0;
+  }
+  let include = values[n] + knapSack(values, weights, n - 1, W - weights[n]);
+  let exclude = knapSack(values, weights, n - 1, W);
+  return Math.max(include, exclude);
+}
+answer = knapSack(values, weights, values.length - 1, W);
+return answer;
+
+}
+
+</script>
+
+
+<style>
+  body {
+    text-align: center;
+    font-family:Verdana, sans-serif;
+    background-color: lightblue;
+
+  }
+  
+  h1 {
+    color: black;
+    margin-left: 20px;
+  }
+
+  button {
+    background-color: #4CAF50; /* Green */
+    border: 2px solid white;
+    color: white;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    border-radius: 5px;
+  }
+  button:hover, button:active {
+    background-color: white;
+    color:black;
+    border: 2px solid black;
+  }
+  label {
+    font-family: "Lucida Console", "Courier New", monospace;
+
+  }
+  input {
+    background-color: #4c93af;
+    border-radius: 5px;
+    border: none;
+    color: white;
+    font-weight: bold;
+    height: 50px;
+    width: 75px;
+  }
+
+  a {
+    border-radius: 5px;
+  }
+  a:link, a:visited {
+    background-color: white;
+    color: black;
+    border: 2px solid #4CAF50;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    
+  }
+  
+  a:hover, a:active {
+    background-color: #4CAF50;
+    color: white;
+  }
+
+  #endResult{
+font-weight: bold;
+color: black;
+
+
+  }
+</style>
+
+</html>

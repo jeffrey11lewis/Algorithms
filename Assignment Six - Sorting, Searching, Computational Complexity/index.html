@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sorting, Searching, Computational Complexity</title>
+</head>
+<body>
+    <h1>Sorting, Searching, Computational Complexity</h1>
+    <p id="endResult"></p>
+    <button id="bubblesort" onclick="bubbleSortClick()">BubbleSort</button>
+    <button id="selectionsort" onclick="selectionSortClick()">SelectionSort</button>
+    <br>
+    <button id="linearsearch" onclick="linearSearchClick()">LinearSearch</button>
+    <button id="binarysearch" onclick="binarySearchClick()">BinarySearch</button>
+</body>
+
+<script>
+arr = Array.from({length: 2000}, () => Math.floor(Math.random() * 400));
+list = Array.from({length: 200000}, () => Math.floor(Math.random() * 40000));
+value = 600
+
+function bubbleSortClick(){
+    var start = Date.now();
+    bubbleSort(arr);
+    var duration = Date.now() - start;
+
+    let endResult = document.getElementById("endResult");
+    message = "Sorted array: " + bubbleSort(arr) +" and took " +  duration + "ms";
+    endResult.textContent = message;
+}
+function bubbleSort(arr){
+
+//Outer pass
+for(let i = 0; i < arr.length; i++){
+
+    //Inner pass
+    for(let j = 0; j < arr.length - i - 1; j++){
+
+        //Value comparison using ascending order
+
+        if(arr[j + 1] < arr[j]){
+
+            //Swapping
+            [arr[j + 1],arr[j]] = [arr[j],arr[j + 1]]
+        }
+    }
+};
+return arr;
+
+};
+
+function selectionSortClick(){
+    var start = Date.now();
+    selectionSort(arr);
+    var duration = Date.now() - start;
+
+    let endResult = document.getElementById("endResult");
+    message = "Sorted array: " + selectionSort(arr) +" and took " +  duration + "ms";
+    endResult.textContent = message;
+}
+
+function selectionSort(arr) {
+  let min;
+
+  //start passes.
+  for (let i = 0; i < arr.length; i++) {
+    //index of the smallest element to be the ith element.
+    min = i;
+
+    //Check through the rest of the array for a lesser element
+    for (let j = i + 1; j < arr.length; j++) {
+      if (arr[j] < arr[min]) {
+        min = j;
+      }
+    }
+
+    //compare the indexes
+    if (min !== i) {
+      //swap
+      [arr[i], arr[min]] = [arr[min], arr[i]];
+    }
+  }
+
+  return arr;
+}
+
+function linearSearchClick(){
+    var start = Date.now();
+    linearSearch(list, value);
+    var duration = Date.now() - start;
+
+    let endResult = document.getElementById("endResult");
+    message = "Found Position: " + linearSearch(list, value) +" and took " +  duration + "ms";
+    endResult.textContent = message;
+}
+function linearSearch(list, value){
+    for (let i = 0; i < list.length; i++) {
+        if (list[i] === value) {
+            return i;
+        }
+    }
+}
+function binarySearchClick(){
+    var start = Date.now();
+    binarySearch(list, value);
+    var duration = Date.now() - start;
+
+    let endResult = document.getElementById("endResult");
+    message = "Found Position: " + binarySearch(list, value) +" and took " +  duration + "ms";
+    endResult.textContent = message;
+}
+  
+function binarySearch(list, value){
+    let left = 0;
+    let right = list.length - 1;
+    let mid = Math.floor((left + right) / 2);
+
+    while (list[mid] !== value && left <= right) {
+        if (value < list[mid]) {
+            right = mid - 1
+        } else {
+            left = mid + 1
+        }
+        mid = Math.floor((left + right) / 2);
+    }
+    if (list[mid] === value) {
+        return mid;
+    } 
+}
+/*
+function test {
+    let endResult = document.getElementById("endResult");
+    endResult.textContent = "hello!"
+}
+  */
+</script>
+</html>

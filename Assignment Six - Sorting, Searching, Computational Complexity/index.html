@@ -8,70 +8,80 @@
 </head>
 <body>
     <h1>Sorting, Searching, Computational Complexity</h1>
+    <a href="https://docs.google.com/document/d/1PCtci9Jv3MJ5oEiyCzd3w41O_NyoLTA5PFvRmowVUjE/edit?usp=sharing" target="_blank">REPORT</a>
+    <a href="https://github.com/jeffrey11lewis/Algorithms/blob/main/Assignment%20Six%20-%20Sorting%2C%20Searching%2C%20Computational%20Complexity/index.html" target="_blank">CODE ON GITHUB</a>
     <p id="endResult"></p>
     <button id="bubblesort" onclick="bubbleSortClick()">BubbleSort</button>
     <button id="selectionsort" onclick="selectionSortClick()">SelectionSort</button>
-    <br>
+
     <button id="linearsearch" onclick="linearSearchClick()">LinearSearch</button>
     <button id="binarysearch" onclick="binarySearchClick()">BinarySearch</button>
+    <br>
+    <iframe width="560" height="315" src="https://www.youtube.com/embed/6z0uwKLJJn0" 
+    title="YouTube video player" frameborder="0" 
+    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+    allowfullscreen></iframe>
 </body>
 
 <script>
-arr = Array.from({length: 2000}, () => Math.floor(Math.random() * 400));
-list = Array.from({length: 200000}, () => Math.floor(Math.random() * 40000));
-value = 600
+//list = Array.from({length: 2000}, () => Math.floor(Math.random() * 400));
+list = Array.from({length: 100000}, () => Math.floor(Math.random() * 400));
+//var list =  [12, 45, 48, 5, 451, 2,34 ,45,45,43,54,66 ]
+var value = 399;
+sortedList = selectionSort(list);
+//value = 2
 
 function bubbleSortClick(){
     var start = Date.now();
-    bubbleSort(arr);
+    bubbleSort(list);
     var duration = Date.now() - start;
 
     let endResult = document.getElementById("endResult");
-    message = "Sorted array: " + bubbleSort(arr) +" and took " +  duration + "ms";
+    message = "BubbleSort took " +  duration + "ms";
     endResult.textContent = message;
 }
-function bubbleSort(arr){
+function bubbleSort(list){
 
 //Outer pass
-for(let i = 0; i < arr.length; i++){
+for(let i = 0; i < list.length; i++){
 
     //Inner pass
-    for(let j = 0; j < arr.length - i - 1; j++){
+    for(let j = 0; j < list.length - i - 1; j++){
 
         //Value comparison using ascending order
 
-        if(arr[j + 1] < arr[j]){
+        if(list[j + 1] < list[j]){
 
             //Swapping
-            [arr[j + 1],arr[j]] = [arr[j],arr[j + 1]]
+            [list[j + 1],list[j]] = [list[j],list[j + 1]]
         }
     }
 };
-return arr;
+return list;
 
 };
 
 function selectionSortClick(){
     var start = Date.now();
-    selectionSort(arr);
+    selectionSort(list);
     var duration = Date.now() - start;
 
     let endResult = document.getElementById("endResult");
-    message = "Sorted array: " + selectionSort(arr) +" and took " +  duration + "ms";
+    message = "SelectionSort took " +  duration + "ms";
     endResult.textContent = message;
 }
 
-function selectionSort(arr) {
+function selectionSort(list) {
   let min;
 
   //start passes.
-  for (let i = 0; i < arr.length; i++) {
+  for (let i = 0; i < list.length; i++) {
     //index of the smallest element to be the ith element.
     min = i;
 
     //Check through the rest of the array for a lesser element
-    for (let j = i + 1; j < arr.length; j++) {
-      if (arr[j] < arr[min]) {
+    for (let j = i + 1; j < list.length; j++) {
+      if (list[j] < list[min]) {
         min = j;
       }
     }
@@ -79,55 +89,59 @@ function selectionSort(arr) {
     //compare the indexes
     if (min !== i) {
       //swap
-      [arr[i], arr[min]] = [arr[min], arr[i]];
+      [list[i], list[min]] = [list[min], list[i]];
     }
   }
 
-  return arr;
+  return list;
 }
 
 function linearSearchClick(){
     var start = Date.now();
-    linearSearch(list, value);
+    linearSearch(sortedList, value);
     var duration = Date.now() - start;
 
     let endResult = document.getElementById("endResult");
-    message = "Found Position: " + linearSearch(list, value) +" and took " +  duration + "ms";
+    message = "Linear Found Position: " + linearSearch(sortedList, value) +" and took " +  duration + "ms";
     endResult.textContent = message;
 }
-function linearSearch(list, value){
-    for (let i = 0; i < list.length; i++) {
-        if (list[i] === value) {
+function linearSearch(sortedList, value){
+    for (let i = 0; i < sortedList.length; i++) {
+        if (sortedList[i] === value) {
             return i;
         }
     }
 }
 function binarySearchClick(){
     var start = Date.now();
-    binarySearch(list, value);
+    binarySearch(sortedList, value);
     var duration = Date.now() - start;
 
     let endResult = document.getElementById("endResult");
-    message = "Found Position: " + binarySearch(list, value) +" and took " +  duration + "ms";
+    message = "Binary Found Position: " + binarySearch(sortedList, value) +" and took " +  duration + "ms";
     endResult.textContent = message;
 }
   
-function binarySearch(list, value){
-    let left = 0;
-    let right = list.length - 1;
-    let mid = Math.floor((left + right) / 2);
+function binarySearch(sortedList, value){
+    let start = 0;
+    let end = sortedList.length - 1;
 
-    while (list[mid] !== value && left <= right) {
-        if (value < list[mid]) {
-            right = mid - 1
+    while (start <= end) {
+        let middle = Math.floor((start + end) / 2);
+
+        if (sortedList[middle] === value) {
+            // found the value
+            return middle;
+        } else if (sortedList[middle] < value) {
+            // continue searching to the right
+            start = middle + 1;
         } else {
-            left = mid + 1
+            // search searching to the left
+            end = middle - 1;
         }
-        mid = Math.floor((left + right) / 2);
     }
-    if (list[mid] === value) {
-        return mid;
-    } 
+	// value wasn't found
+    return -1;
 }
 /*
 function test {
@@ -136,4 +150,71 @@ function test {
 }
   */
 </script>
+<style>body {
+    text-align: center;
+    font-family:Verdana, sans-serif;
+    background-color: lightblue;
+
+  }
+  
+  h1 {
+    color: black;
+    margin-left: 20px;
+  }
+
+  button {
+    background-color: #4CAF50; /* Green */
+    border: 2px solid white;
+    color: white;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    border-radius: 5px;
+  }
+  button:hover, button:active {
+    background-color: white;
+    color:black;
+    border: 2px solid black;
+  }
+  label {
+    font-family: "Lucida Console", "Courier New", monospace;
+
+  }
+  input {
+    background-color: #4c93af;
+    border-radius: 5px;
+    border: none;
+    color: white;
+    font-weight: bold;
+    height: 50px;
+    width: 75px;
+  }
+
+  a {
+    border-radius: 5px;
+  }
+  a:link, a:visited {
+    background-color: white;
+    color: black;
+    border: 2px solid #4CAF50;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    
+  }
+  
+  a:hover, a:active {
+    background-color: #4CAF50;
+    color: white;
+  }
+
+  #endResult{
+font-weight: bold;
+color: black;
+
+
+  }</style>
 </html>
